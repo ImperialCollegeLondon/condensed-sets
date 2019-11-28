@@ -8,7 +8,7 @@ namespace category_theory.limits
 open opposite
 
 
-universes w v u
+universes v u
 
 variables {C : Type u} [𝒞 : category.{v} C]
 include 𝒞
