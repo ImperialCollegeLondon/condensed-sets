@@ -13,7 +13,7 @@ open opposite
 universes v u
 
 variables {C : Type u} [𝒞 : category.{v} C]
-include 𝒞 Dc
+include 𝒞
 
  /- Maybe define sieve as a subfunctor? (but then I have to define subfunctor...)
  
@@ -26,7 +26,7 @@ def sieve (c : C) := Π (U : C), set ((functor.hom C).obj (op (U), c))
 
 set_option pp.universes true
 
-/- def pullback_sieve (X Y : C) (f : Y ⟶ X) (S : sieve.{v} X) : sieve.{v} Y := λ U, _ -/
+def pullback_sieve (X Y : C) (f : Y ⟶ X) (S : sieve.{v} X) : sieve.{v} Y := λ Z, {g | g ≫ f ∈ S Z}
 
 variable [pullbacks : limits.has_pullbacks.{v} C]
 include pullbacks
