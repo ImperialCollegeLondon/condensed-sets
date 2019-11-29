@@ -22,11 +22,20 @@ include 𝒞
 (obj : ∀ (c : C), ) -/
 
 /- Could potentially simplify hom definition by using hom_obj in hom_functor.lean somehow...-/
-def sieve (c : C) := Π (U : C), set ((functor.hom C).obj (op (U), c))
+def sieve (X : C) := Π (Y : C), set ((functor.hom C).obj (op Y, X))
+
+def id_sieve (X : C) : sieve X := λ (Y : C), {f | true}
 
 set_option pp.universes true
 
 def pullback_sieve (X Y : C) (f : Y ⟶ X) (S : sieve.{v} X) : sieve.{v} Y := λ Z, {g | g ≫ f ∈ S Z}
+
+structure grothendieck_topology :=
+(coverings : Π (X : C), set (sieve X))
+(base_change : ∀ (X Y : C) (S : sieve X) (f : Y ⟶ X), S ∈ coverings X → (pullback_sieve X Y f S) ∈ coverings Y)
+(local_character : ∀ (X : C) (S T : sieve X) (cover : S ∈ coverings X), ∀ (Y : C) (f : Y ⟶ X), 
+f ∈ S Y ∧ (pullback_sieve X Y f S) ∈ coverings Y → T ∈ coverings X)
+(id : ∀ (X : C), id_sieve X ∈ coverings X)
 
 variable [pullbacks : limits.has_pullbacks.{v} C]
 include pullbacks
