@@ -22,7 +22,7 @@ include 𝒞
 
 /- Could potentially simplify hom definition by using hom_obj in hom_functor.lean somehow...-/
 structure sieve (X : C) := 
-(map : Π (Y : C), set ((functor.hom C).obj (op Y, X)))
+(map : Π (Y : C), set (Y ⟶ X))
 (comp : ∀ (Y Z: C) (g : Y ⟶ Z) (f ∈ map Z), g ≫ f ∈ map Y)
 
 def id_sieve (X : C) : sieve.{v} X := ⟨λ (Y : C), {f | true}, by tidy⟩
