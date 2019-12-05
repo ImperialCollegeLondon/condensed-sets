@@ -56,10 +56,10 @@ def proj_map_2' (X : C) (S : sieve.{v} X) [limits.has_pullbacks.{v} C] : Π k : 
 
 def proj_map_2 (X : C) (S : sieve.{v} X) [limits.has_pullbacks.{v} C] : ∏ (fan_prod F X S) ⟶ ∏ (fan_prod_pullback F X S) := limits.pi.lift (proj_map_2' F X S)
 
-structure sheaf [limits.has_pullbacks.{v} C] :=
-(F : Cᵒᵖ ⥤ D)
-(limit : ∀ (X : C) (S ∈ J.coverings X) (w : (cover_proj F X S) ≫ (proj_map_1 F X S) = (cover_proj F X S) ≫ (proj_map_2 F X S)), 
-limits.is_limit (limits.fork.of_ι (cover_proj F X S) w))
+class sheaf (F : Cᵒᵖ ⥤ D) [limits.has_pullbacks.{v} C] :=
+(commuting : ∀ (X : C) (S ∈ J.coverings X), (cover_proj F X S) ≫ (proj_map_1 F X S) = (cover_proj F X S) ≫ (proj_map_2 F X S))
+(limit : ∀ (X : C) (S : sieve.{v} X) (covering : S ∈ J.coverings X), 
+limits.is_limit (limits.fork.of_ι (cover_proj F X S) (commuting X S covering)))
 
 end category_theory.functor
 end category_theory.limits
