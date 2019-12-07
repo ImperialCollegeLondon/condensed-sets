@@ -1,6 +1,6 @@
 /-
 
-# An equilizer lemma.
+# An equalizer lemma.
 
 In category theory, if f and g are morphisms from X to Y, then
 the equalizer of (f,g) is isomorphic to the equalizer of (g,f).
@@ -18,7 +18,7 @@ universes v u
 variables {C : Type u} [𝒞 : category.{v} C] [has_equalizers.{v} C]
 include 𝒞
 
-variables (A B : C) (f g : A ⟶ B)
+variables {A B : C} (f g : A ⟶ B)
 
 /- I will assume people know the mathematics of equalizers and limits.
 
@@ -91,13 +91,13 @@ in (has_limit.is_limit (parallel_pair f g)).lift s
 #print equalizer.symm.hom
 
 def equalizer.symm : equalizer f g ≅ equalizer g f := 
-{ hom := equalizer.symm.hom X Y g f,
-  inv := equalizer.symm.hom X Y f g,
+{ hom := equalizer.symm.hom g f,
+  inv := equalizer.symm.hom f g,
   -- this follows from uniqueness of maps making stuff commute
   hom_inv_id' := begin
     letI haslim : has_limit (parallel_pair f g) := by apply_instance,
     rw (haslim.is_limit.uniq haslim.cone (𝟙 (equalizer f g))),
-    { rw haslim.is_limit.uniq haslim.cone (equalizer.symm.hom X Y g f ≫ equalizer.symm.hom X Y f g),
+    { rw haslim.is_limit.uniq haslim.cone (equalizer.symm.hom g f ≫ equalizer.symm.hom f g),
       intro j,
       rw category.assoc,
       let XXX := haslim.is_limit.fac,
