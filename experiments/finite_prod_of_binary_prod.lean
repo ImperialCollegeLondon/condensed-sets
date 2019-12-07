@@ -17,6 +17,15 @@ include 𝒞
 
 open_locale classical
 
+/- cheat sheet
+
+/-- `has_limit F` represents a particular chosen limit of the diagram `F`. -/
+class has_limit (F : J ⥤ C) :=
+(cone : cone F)
+(is_limit : is_limit cone . tactic.apply_instance)
+
+
+-/
 #check limits.has_limit
 #check category_theory.functor
 
