@@ -56,9 +56,12 @@ structure grothendieck_topology (C : Type u) [category.{v} C] :=
          (pullback_sieve f T) ∈ coverings Y) → T ∈ coverings X)
 (id : ∀ (X : C), id_sieve X ∈ coverings X)
 
+#check @grothendieck_topology.rec_on
+
+
 -- how to generate this? @[ext] didn't work for because of the explicit universe parameters
 lemma grothendieck_topology_ext {C : Type u} [category.{v} C] {J K : grothendieck_topology C}:
-    J.coverings = K.coverings → J = K := sorry
+    J.coverings = K.coverings → J = K := by {cases K, intro H, cases J, tidy}
 
 -- SGA 4 II 1.1.2
 -- can this be automated or at least done quicker?
