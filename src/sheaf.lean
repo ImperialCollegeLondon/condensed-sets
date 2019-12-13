@@ -1,10 +1,34 @@
 import sieve
+import sites
 import category_theory.limits.shapes.equalizers
 import category_theory.const
 
 namespace category_theory
 namespace category_theory.limits
 namespace category_theory.functor
+
+section sheaves
+universes w v u
+open opposite
+
+variables {C : Type u} [CCat : category.{v} C] 
+variables {D : Type w} [DCat : category.{max u v} D]
+variables [products : limits.has_products.{max u v} D]
+include CCat products
+
+def restriction_map (F : Cᵒᵖ ⥤ D) {U : C} (S : @sieve.{v} C CCat U) : 
+    F.obj (op U) ⟶ ∏ (λ k : sieve_domain S, F.obj (op k.Y)) := 
+    limits.pi.lift (λ k : sieve_domain S, F.map k.f.op) 
+
+include DCat
+
+structure separated_presheaf (J : @grothendieck_topology C CCat) :=
+(F : Cᵒᵖ ⥤ D)
+(identity : ∀ {U : C} (S : sieve.{v} U) (S ∈ J.coverings U), 
+    mono (restriction_map F S))
+
+omit CCat products
+end sheaves
 
 open opposite
 
