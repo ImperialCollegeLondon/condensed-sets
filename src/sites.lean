@@ -107,10 +107,28 @@ universes v u
 def topology_gen_by {C : Type u} [iC : category.{v} C] (fa : Π X Y : C, set (Y ⟶ X)):
     @grothendieck_topology C iC := lattice.Inf {J | ∀ X Y : C, sieve_gen_by (fa X) ∈ J.coverings X}
 
+def is_fibreproduct {C : Type u} [iC : category.{v} C] 
+    {A X Y Z : C} (pX : A ⟶ X) (pY : A ⟶ Y) (f : X ⟶ Z) (g : Y ⟶ Z) :=
+    ∀ B : C, ∀ fx : B ⟶ X, ∀ fy : B ⟶ Y, fx ≫ f = fy ≫ g → 
+        (∃ h : B ⟶ A, h ≫ pX = fx ∧ h ≫ pY = fy ∧ 
+        (∀ h1 : B ⟶ A, (h1 ≫ pX = fx ∧ h1 ≫ pY = fy) → h1 = h))
+
+def is_squareable {C : Type u} [iC : category.{v} C] {X Y :C} (f : Y ⟶ X) :=
+    ∀ Z : C, ∀ g : Z ⟶ X, ∃ A : C, ∃ pX : A ⟶ Z, ∃ pY : A ⟶ Y, 
+        is_fibreproduct pX pY g f
+
 --SGA 4 II def 1.3. pretopology
 structure pretopology (C : Type u) [iC : category.{v} C] :=
-(coverings : Π X Y : C, set (Y ⟶ X))
---TODO define this and prove Prop 1.4
+(coverings : Π X : C, set (Π Y : C, set (Y ⟶ X)))
+(squareable : ∀ X : C, ∀ fa : (Π Y : C, set (Y ⟶ X)), 
+    fa ∈ coverings X → ∀ {Y : C} (f : Y ⟶ X), f ∈ fa Y → is_squareable f)
+(basechange : ∀ X : C, ∀ fa : (Π Z : C, set (Z ⟶ X)), ∀ {Y : C} (f : Y ⟶ X),
+    fa ∈ coverings X → (λ Z : C, {g : Z ⟶ Y | ∃ Xa : C, ∃ h : Xa ⟶ X, 
+        h ∈ fa Xa ∧ ∃ p : Z ⟶ Xa, is_fibreproduct p g h f}) ∈ coverings Y)
+(local_character : sorry)
+(identity : ∀ X : C, sorry)
+
+--TODO prove Prop 1.4
 
 end topologies
 
